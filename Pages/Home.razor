@@ -1,0 +1,36 @@
+﻿@page "/"
+
+<div class="flex justify-between items-end border-b-2 border-on-background pb-3 mb-8">
+    <div>
+        <h1 class="font-display-lg text-[40px] xl:text-[48px] text-on-background mb-2 font-black tracking-tight">Explore
+            o Acervo</h1>
+            <p class="font-body-lg text-on-surface-variant text-xl">Seleções curadas do nosso repositório digital.</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-12">
+        @foreach (var book in Books)
+        {
+            <BookCard Title="@book.Title" Author="@book.Author" Category="@book.Category" IsAvailable="@book.IsAvailable" />
+        }
+    </div>
+
+@code {
+    private List<BookCardModel> Books = new()
+    {
+        new BookCardModel { Title = "Neuromancer's Guide", Author = "William Gibson", Category = "Ficção Científica",
+IsAvailable = false },
+        new BookCardModel { Title = "Integridade Estrutural", Author = "Le Corbusier", Category = "Arquitetura", IsAvailable =
+true },
+        new BookCardModel { Title = "Visões Vaporwave", Author = "A.esthetics", Category = "Arte", IsAvailable = true },
+        new BookCardModel { Title = "O Sistema de Grid", Author = "Josef Müller", Category = "Design", IsAvailable = true }
+    };
+
+    public class BookCardModel
+    {
+        public string Title { get; set; } = "";
+        public string Author { get; set; } = "";
+        public string Category { get; set; } = "";
+        public bool IsAvailable { get; set; }
+    }
+}

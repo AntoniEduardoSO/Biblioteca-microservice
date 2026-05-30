@@ -1,5 +1,6 @@
 @page "/admin/inventory/{BookId:int}"
 @layout AdminLayout
+@using BibliotecaMicroservice.Models
 
 <div class="max-w-container-max mx-auto flex flex-col gap-8 pb-12">
     
@@ -124,7 +125,7 @@
 
     // Objeto mockado para demonstrar o binding. 
     // Em produção, isso virá do seu microsserviço no método OnInitializedAsync.
-    private BookDetailModel Book = new BookDetailModel
+    private Book Book = new Book
     {
         Title = "Neuromancer",
         Author = "William Gibson",
@@ -135,32 +136,10 @@
         AvailableCopies = 3,
         LoanedCopies = 2,
         Genres = new List<string> { "Sci-Fi", "Cyberpunk" },
-        ActiveLoans = new List<LoanModel>
+        ActiveLoans = new List<Loan>
         {
-            new LoanModel { UserName = "Alice Vance", LoanDate = DateTime.Now.AddDays(-10), DueDate = DateTime.Now.AddDays(4), IsOverdue = false },
-            new LoanModel { UserName = "Case Henry", LoanDate = DateTime.Now.AddDays(-20), DueDate = DateTime.Now.AddDays(-6), IsOverdue = true }
+            new Loan { UserName = "Alice Vance", LoanDate = DateTime.Now.AddDays(-10), DueDate = DateTime.Now.AddDays(4), IsOverdue = false },
+            new Loan { UserName = "Case Henry", LoanDate = DateTime.Now.AddDays(-20), DueDate = DateTime.Now.AddDays(-6), IsOverdue = true }
         }
     };
-
-    public class BookDetailModel
-    {
-        public string Title { get; set; } = "";
-        public string Author { get; set; } = "";
-        public string ISBN { get; set; } = "";
-        public string Publisher { get; set; } = "";
-        public string CoverUrl { get; set; } = "";
-        public int TotalCopies { get; set; }
-        public int AvailableCopies { get; set; }
-        public int LoanedCopies { get; set; }
-        public List<string> Genres { get; set; } = new();
-        public List<LoanModel> ActiveLoans { get; set; } = new();
-    }
-
-    public class LoanModel
-    {
-        public string UserName { get; set; } = "";
-        public DateTime LoanDate { get; set; }
-        public DateTime DueDate { get; set; }
-        public bool IsOverdue { get; set; }
-    }
 }

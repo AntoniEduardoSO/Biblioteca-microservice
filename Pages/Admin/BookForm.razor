@@ -1,3 +1,4 @@
+@using BibliotecaMicroservice.Models
 <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 overflow-y-auto">
     
     <div class="relative w-full max-w-4xl bg-[#FFF8ED] border-2 border-on-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-10 mt-auto mb-auto">
@@ -36,9 +37,9 @@
                 <div class="space-y-2">
                     <label class="block font-label-md font-bold uppercase tracking-wider text-sm">Status</label>
                     <select @bind="Book.Status" class="w-full bg-white border-2 border-on-background p-4 font-body-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:translate-x-[2px] focus:translate-y-[2px] focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all appearance-none">
-                        <option value="Available">Disponível</option>
-                        <option value="Loaned">Emprestado</option>
-                        <option value="Overdue">Atrasado</option>
+                        <option value="@BookStatus.Available">Disponível</option>
+                        <option value="@BookStatus.Loaned">Emprestado</option>
+                        <option value="@BookStatus.Overdue">Atrasado</option>
                     </select>
                 </div>
             </div>
@@ -71,26 +72,18 @@
     [Parameter] public EventCallback OnClose { get; set; }
 
     private bool IsEditMode => BookId.HasValue;
-    private BookFormModel Book = new();
+    private Book Book = new();
 
     protected override void OnInitialized()
     {
         if (IsEditMode)
         {
-            Book = new BookFormModel { Title = "Neuromancer", Author = "William Gibson", ISBN = "978-0441569595", Status = "Available" };
+            Book = new Book { Title = "Neuromancer", Author = "William Gibson", ISBN = "978-0441569595", Status = BookStatus.Available };
         }
     }
 
     private Task Fechar()
     {
         return OnClose.InvokeAsync();
-    }
-
-    public class BookFormModel
-    {
-        public string Title { get; set; } = "";
-        public string Author { get; set; } = "";
-        public string ISBN { get; set; } = "";
-        public string Status { get; set; } = "Available";
     }
 }

@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@implements IDisposable
+@inject NavigationManager NavManager
 
 <div class="bg-background text-on-background font-body-md bg-grid-pattern bg-grid min-h-screen flex flex-col">
     
@@ -12,7 +14,31 @@
             @Body
         </main>
         
-        <QuickLoans />
+        @if (IsHomePage)
+        {
+            <QuickLoans />
+        }
 
     </div>
 </div>
+
+@code {
+    // Verifica se a URL atual é a raiz "/" (vazia após a base)
+    private bool IsHomePage => NavManager.ToBaseRelativePath(NavManager.Uri).Equals("catalog", StringComparison.OrdinalIgnoreCase);
+
+    protected override void OnInitialized()
+    {
+        // Fica "ouvindo" toda vez que o usuário muda de página
+        NavManager.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+    {
+        StateHasChanged(); // Avisa o Layout que ele precisa se redesenhar
+    }
+
+    public void Dispose()
+    {
+        NavManager.LocationChanged -= OnLocationChanged; // Previne vazamento de memória ao destruir o componente
+    }
+}
